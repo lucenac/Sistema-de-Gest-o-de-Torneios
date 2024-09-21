@@ -274,7 +274,13 @@ void cadastrarJogo() {
         scanf(" %d", &novoJogo.gols1);
         printf("Digite a quantidade de gols da segunda equipe: \n");
         scanf(" %d", &novoJogo.gols2);
-
+        while(novoJogo.gols1 == novoJogo.gols2){
+            printf("Empate não existe durante um campeonato mata-mata.\nInsira a quantidade de gols novamente \n");
+            printf("Digite a quantidade de gols da primeira equipe: \n");
+            scanf(" %d", &novoJogo.gols1);
+            printf("Digite a quantidade de gols da segunda equipe: \n");
+            scanf(" %d", &novoJogo.gols2);
+        }
         jogos[num_jogos] = novoJogo;
         num_jogos++;
 }
