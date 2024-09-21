@@ -43,7 +43,7 @@ int num_jogos = 0; // numero de jogos cadastrados
 void carregarDadosJogos();
 void salvarDadosJogos();
 void carregarDadosEquipes();
-void carregarDadosEquipes();
+void salvarDadosEquipes();
 
 void exibirEstatisticas(); //funÃ§Ã£o para exibir estatÃ­sticas
 
@@ -90,7 +90,8 @@ int main() {
     carregarDadosEquipes();
     carregarDadosJogos();
     menuPrincipal();
-    // salvarDados();
+    salvarDadosEquipes();
+    salvarDadosJogos();
     return 0;
 }
 
@@ -288,9 +289,9 @@ void visualizarJogos() {
         puts("");
         printf("Jogo %d:\n", i+1);
         printf("    Nome da Equipe 1: %s\n", jogos[i].equipe1);
-        printf("    NÃºmero de Gols: %d\n", jogos[i].gols1);
+        printf("    Numero de Gols: %d\n", jogos[i].gols1);
         printf("    Nome da Equipe 2: %s\n", jogos[i].equipe2);
-        printf("    NÃºmero de Gols: %d\n", jogos[i].gols2);
+        printf("    Numero de Gols: %d\n", jogos[i].gols2);
         if(jogos[i].gols1 > jogos[i].gols2){
             printf("Equipe Vitoriosa: %s\n", jogos[i].equipe1);
         }else if(jogos[i].gols1 < jogos[i].gols2){
@@ -376,23 +377,23 @@ void excluirJogo() {
     }
     int escolha;
     scanf(" %d", &escolha);
-    //Adicionei esse while, para caso se o escolha receber um nÃºmero que nÃ£o 
-    //cabe dentro do num_jogos. - TainÃ¡
+    //Adicionei esse while, para caso se o escolha receber um numero que nao 
+    //cabe dentro do num_jogos. - Taina!
     while(escolha < num_jogos || escolha > num_jogos){
-        printf("Escolha invÃ¡lida...\n");
+        printf("Escolha invalida...\n");
         printf("Tente Novamente...\n");
         scanf(" %d", &escolha);
     }
     escolha--;
     limparTela();
     puts("");
-        printf("Equipe %d:\n", escolha);
-        printf("    Nome da Equipe 1: %s\n", jogos[escolha].equipe1);
-        printf("    NÃºmero de Gols: %d\n", jogos[escolha].gols1);
-        printf("    Nome da Equipe 1: %s\n", jogos[escolha].equipe2);
-        printf("    NÃºmero de Gols: %d\n", jogos[escolha].gols2);
+        printf("Jogo %d:\n", escolha);
+        printf("    Nome da Equipe: %s\n", jogos[escolha].equipe1);
+        printf("    Numero de Gols: %d\n", jogos[escolha].gols1);
+        printf("    Nome da Equipe: %s\n", jogos[escolha].equipe2);
+        printf("    Numero de Gols: %d\n", jogos[escolha].gols2);
         puts("");
-        printf("VocÃª tem certeza que deseja excluir essa equipe?\n");
+        printf("Voce tem certeza que deseja excluir esse jogo?\n");
         puts("1. Sim");
         puts("0. Nao");
         int opcao;
@@ -400,11 +401,11 @@ void excluirJogo() {
         switch (opcao)
         {
         case 1:
-            for (int i = escolha; i < num_equipes - 1; i++) {
+            for (int i = escolha; i < num_jogos - 1; i++) {
                 jogos[i] = jogos[i + 1];
             }
             num_jogos--;
-            puts("Jogo exluida!");
+            puts("Jogo exluido!");
             break;
 
         case 0:
@@ -458,26 +459,26 @@ void carregarDadosEquipes(){
 }
 
 void salvarDadosEquipes(){
-    FILE *arquivo = fopen(ARQUIVO_JOGOS, "wb"); // abrir o arquivo em modo binÃ¡rio de escrita
+    FILE *arquivo = fopen(ARQUIVO_EQUIPES, "wb"); // abrir o arquivo em modo binÃ¡rio de escrita
     if (arquivo == NULL) {
         printf("Erro ao salvar os dados.\n");
         return;
     }
-    fwrite(&num_equipes, sizeof(int), 1, arquivo); // salvar o nÃºmero de equipes
+    fwrite(&num_equipes, sizeof(int), 1, arquivo); // salvar o numero de equipes
     fwrite(equipes, sizeof(Equipe), num_equipes, arquivo); // salvar as equipes
     fclose(arquivo); // fechar o arquivo
-    printf("Dados salvos com sucesso!\n");
+    // printf("Dados salvos com sucesso!\n");
 }
 
 void carregarDadosJogos(){
-    FILE *arquivo = fopen(ARQUIVO_JOGOS, "rb"); // abrie o arquivo
+    FILE *arquivo = fopen(ARQUIVO_JOGOS, "rb"); // abre o arquivo
     if (arquivo == NULL) {
         return; // caso o arquivo nao exista, ou nao foi declado certo
     }
 
-    fread(&num_jogos, sizeof(int), 1, arquivo); // carregaa o numero de equipes
-    fread(equipes, sizeof(Jogo), num_jogos, arquivo); // carregaa as equipes
-    fclose(arquivo); // fechaa o arquivo
+    fread(&num_jogos, sizeof(int), 1, arquivo); // carregaa o numero de jogos
+    fread(jogos, sizeof(Jogo), num_jogos, arquivo); // carrega os jogos
+    fclose(arquivo); // fecha o arquivo
 }
 
 void salvarDadosJogos(){
@@ -489,7 +490,7 @@ void salvarDadosJogos(){
     fwrite(&num_jogos, sizeof(int), 1, arquivo); // salvar o nÃºmero de equipes
     fwrite(jogos, sizeof(Jogo), num_jogos, arquivo); // salvar as equipes
     fclose(arquivo); // fechar o arquivo
-    printf("Dados salvos com sucesso!\n");
+    // printf("Dados salvos com sucesso!\n");
 }
 
 void menuEquipes(){
@@ -501,8 +502,6 @@ void menuEquipes(){
         printf("2. Visualizar Equipes\n");
         printf("3. Alterar Equipe\n");
         printf("4. Exluir Equipe\n");
-        printf("5. Salvar Dados\n");
-        printf("6. Carregar Dados\n");
         printf("0. Voltar\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -512,8 +511,6 @@ void menuEquipes(){
             case 2: visualizarEquipes(); break;
             case 3: alterarEquipe(); break;
             case 4: excluirEquipe(); break;
-            case 5: salvarDadosEquipes(); break;
-            case 6: carregarDadosEquipes(); break;
             case 0: break;
             default: printf("Opcao invalida!");
         }
@@ -529,8 +526,6 @@ void menuJogos(){
         printf("2. Visualizar Jogos\n");
         printf("3. Alterar Jogo\n");
         printf("4. Excluir Jogo\n");
-        printf("5. Salvar Dados\n");
-        printf("6. Carregar Dados\n");
         printf("0. Voltar\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -540,8 +535,6 @@ void menuJogos(){
             case 2: visualizarJogos(); break;
             case 3: alterarJogo(); break;
             case 4: excluirJogo(); break;
-            case 5: salvarDadosJogos(); break;
-            case 6: carregarDadosJogos(); break;
             case 0: break;
             default: printf("Opcao invalida!");
         }
