@@ -387,7 +387,7 @@ void excluirJogo() {
     escolha--;
     limparTela();
     puts("");
-        printf("Jogo %d:\n", escolha);
+        printf("Jogo %d:\n", escolha + 1);
         printf("    Nome da Equipe: %s\n", jogos[escolha].equipe1);
         printf("    Numero de Gols: %d\n", jogos[escolha].gols1);
         printf("    Nome da Equipe: %s\n", jogos[escolha].equipe2);
