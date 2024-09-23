@@ -4,7 +4,7 @@
 
 #define MAX_EQUIPES 16
 #define MAX_JOGOS 32
-#define MAX_JOGADORES 15
+#define MAX_JOGADORES 1 // mudei a variavel pra ficar mais facil testar - taina
 #define ARQUIVO_EQUIPES "equipes.dat"
 #define ARQUIVO_JOGOS "jogos.dat"
 
@@ -266,11 +266,36 @@ void cadastrarJogo() {
         novoJogo.gols1 = 0;
         novoJogo.gols2 = 0;
         limparTela();
-        printf("Digite o nome da primeira equipe: \n");
-        scanf(" %[^\n]", novoJogo.equipe1);
-        printf("Digite o nome da segunda equipe: \n");
-        scanf(" %[^\n]", novoJogo.equipe2);
-          printf("Digite a quantidade de gols da primeira equipe: \n");
+        if(num_equipes < 2){
+            printf("Não há equipes o suficiente para cadastrar um jogo.\n");
+            return;
+        }else{
+         for(int i = 0; i < num_equipes; i++){
+            printf("Equipe %d:\n", i+1);
+            printf("    Nome da Equipe: %s\n", equipes[i].nome);
+            printf("    NÃºmero de Gols: %d\n", equipes[i].gols);
+        }
+        int opcao, opcao2;
+             printf("Digite o número identificador da equipe que jogou em casa:");
+             scanf("%d", &opcao);
+        while(opcao < 0 && opcao > num_equipes){
+        printf("Digite novamente o número identificador da equipe que jogou em casa:");
+        scanf("%d", &opcao);
+        }
+        strcpy(novoJogo.equipe1, equipes[opcao-1].nome);
+        printf("Digite o número identificador da equipe que fora de casa:");
+        scanf("%d", &opcao2);
+        while(opcao2 < 0 && opcao2 > num_equipes && opcao2 == opcao){
+        printf("Digite novamente o número identificador da equipe que jogou FORA de casa:");
+        scanf("%d", &opcao2);
+        }
+        strcpy(novoJogo.equipe2, equipes[opcao2-1].nome);
+        //adicionar - condicional do documento - Tem como pré-condição que o novo jogo 
+        //a ser cadastrado ainda não exista no sistema. 
+        //Se existir, é entendido como informação duplicada.
+        printf("Equipe 1: %s\n", equipes[opcao2-1].nome);
+        printf("Equipe 2: %s\n", equipes[opcao-1].nome);
+        printf("Digite a quantidade de gols da primeira equipe: \n");
         scanf(" %d", &novoJogo.gols1);
         printf("Digite a quantidade de gols da segunda equipe: \n");
         scanf(" %d", &novoJogo.gols2);
@@ -281,13 +306,16 @@ void cadastrarJogo() {
             printf("Digite a quantidade de gols da segunda equipe: \n");
             scanf(" %d", &novoJogo.gols2);
         }
+        equipes[opcao-1].gols += novoJogo.gols1;
+        equipes[opcao2-1].gols += novoJogo.gols2;
         jogos[num_jogos] = novoJogo;
         num_jogos++;
+        }
 }
 
 void visualizarJogos() {
     if(num_jogos == 0){
-        printf("Nenhuma equipe cadastrada.");
+        printf("Nenhuma jogo cadastrado.");
         return;
     }
     for(int i = 0; i < num_jogos; i++){
@@ -508,6 +536,8 @@ void menuEquipes(){
         printf("2. Visualizar Equipes\n");
         printf("3. Alterar Equipe\n");
         printf("4. Exluir Equipe\n");
+        printf("5. Carregar Dados\n");
+        printf("6. Salvar Dados \n");
         printf("0. Voltar\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -517,6 +547,8 @@ void menuEquipes(){
             case 2: visualizarEquipes(); break;
             case 3: alterarEquipe(); break;
             case 4: excluirEquipe(); break;
+            case 5: carregarDadosEquipes();
+            case 6: salvarDadosEquipes();
             case 0: break;
             default: printf("Opcao invalida!");
         }
@@ -532,6 +564,8 @@ void menuJogos(){
         printf("2. Visualizar Jogos\n");
         printf("3. Alterar Jogo\n");
         printf("4. Excluir Jogo\n");
+        printf("5. Carregar Dados\n");
+        printf("6. Salvar Dados \n");
         printf("0. Voltar\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -541,6 +575,8 @@ void menuJogos(){
             case 2: visualizarJogos(); break;
             case 3: alterarJogo(); break;
             case 4: excluirJogo(); break;
+            case 5: carregarDadosJogos();
+            case 6: salvarDadosJogos();
             case 0: break;
             default: printf("Opcao invalida!");
         }
