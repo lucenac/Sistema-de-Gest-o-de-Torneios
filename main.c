@@ -301,6 +301,15 @@ void cadastrarJogo() {
                     return;
                 }
             }
+            for(int i = 0; i < num_jogos; i++){
+                if(strcmp(novoJogo.equipe1, jogos[i].equipe1) == 0 && jogos[i].gols1 < jogos[i].gols2 || strcmp(novoJogo.equipe1, jogos[i].equipe2) == 0 && jogos[i].gols2 < jogos[i].gols1){
+                    printf("Equipe %s perdeu, logo não está participando do torneio.\n", novoJogo.equipe1);
+                    return;
+                }else if(strcmp(novoJogo.equipe2, jogos[i].equipe2) == 0 && jogos[i].gols2 < jogos[i].gols1 || strcmp(novoJogo.equipe2, jogos[i].equipe1) == 0 && jogos[i].gols1 < jogos[i].gols2){
+                    printf("Equipe %s perdeu, logo não está participando do torneio.\n", novoJogo.equipe2);
+                    return;
+                }
+            }
         }
         printf("Equipe 1: %s\n", equipes[opcao-1].nome);
         printf("Equipe 2: %s\n", equipes[opcao2-1].nome);
