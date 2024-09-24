@@ -132,7 +132,7 @@ void visualizarEquipes() {
         return;
     }
     for(int i = 0; i < num_equipes; i++){
-        limparTela();
+        //limparTela(); com essa função n dá pra ver todas as equipes no terminal, por isso comentei
         puts("");
         printf("Equipe %d:\n", i+1);
         printf("    Nome da Equipe: %s\n", equipes[i].nome);
@@ -293,8 +293,17 @@ void cadastrarJogo() {
         //adicionar - condicional do documento - Tem como pré-condição que o novo jogo 
         //a ser cadastrado ainda não exista no sistema. 
         //Se existir, é entendido como informação duplicada.
-        printf("Equipe 1: %s\n", equipes[opcao2-1].nome);
-        printf("Equipe 2: %s\n", equipes[opcao-1].nome);
+        if(num_jogos > 0){
+            for (int i = 0; i < num_jogos; i++) {
+                if ((strcmp(novoJogo.equipe1, jogos[i].equipe1) == 0 && strcmp(novoJogo.equipe2, jogos[i].equipe2) == 0) || 
+                    (strcmp(novoJogo.equipe2, jogos[i].equipe1) == 0 && strcmp(novoJogo.equipe1, jogos[i].equipe2) == 0)) {
+                    printf("Jogo previamente cadastrado.\n");
+                    return;
+                }
+            }
+        }
+        printf("Equipe 1: %s\n", equipes[opcao-1].nome);
+        printf("Equipe 2: %s\n", equipes[opcao2-1].nome);
         printf("Digite a quantidade de gols da primeira equipe: \n");
         scanf(" %d", &novoJogo.gols1);
         printf("Digite a quantidade de gols da segunda equipe: \n");
@@ -319,7 +328,7 @@ void visualizarJogos() {
         return;
     }
     for(int i = 0; i < num_jogos; i++){
-        limparTela();
+        //limparTela(); com essa função n dá pra ver todas as equipes no terminal, por isso comentei
         puts("");
         printf("Jogo %d:\n", i+1);
         printf("    Nome da Equipe 1: %s\n", jogos[i].equipe1);
